@@ -38,7 +38,7 @@ function Header({
   onNext,
   children,
 }: HeaderProps) {
-  const { hideNextBtn, hidePrevBtn } = React.useContext(PanelContext);
+  const { hideNextBtn, hidePrevBtn, headRender } = React.useContext(PanelContext);
 
   return (
     <div className={prefixCls}>
@@ -64,7 +64,9 @@ function Header({
           {prevIcon}
         </button>
       )}
-      <div className={`${prefixCls}-view`}>{children}</div>
+      <div className={`${prefixCls}-view`}>
+        {headRender ? headRender(children, { onPrev, onSuperPrev, onNext, onSuperNext }) : children}
+      </div>
       {onNext && (
         <button
           type="button"

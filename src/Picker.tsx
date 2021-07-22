@@ -28,6 +28,7 @@ import getDataOrAriaProps, { toArray } from './utils/miscUtil';
 import type { ContextOperationRefProps } from './PanelContext';
 import PanelContext from './PanelContext';
 import type { CustomFormat, PickerMode } from './interface';
+import type { HeaderProps } from './panels/Header';
 import { getDefaultFormat, getInputSize, elementsContains } from './utils/uiUtil';
 import usePickerInput from './hooks/usePickerInput';
 import useTextValueMapping from './hooks/useTextValueMapping';
@@ -67,6 +68,10 @@ export type PickerSharedProps<DateType> = {
   superNextIcon?: React.ReactNode;
   getPopupContainer?: (node: HTMLElement) => HTMLElement;
   panelRender?: (originPanel: React.ReactNode) => React.ReactNode;
+  headRender?: (
+    originHead: React.ReactNode,
+    handlers: Pick<HeaderProps, 'onPrev' | 'onSuperPrev' | 'onNext' | 'onSuperNext'>,
+  ) => React.ReactNode;
 
   // Events
   onChange?: (value: DateType | null, dateString: string) => void;
@@ -174,6 +179,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
     onSelect,
     direction,
     autoComplete = 'off',
+    headRender,
   } = props as MergedPickerProps<DateType>;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -471,6 +477,7 @@ function InnerPicker<DateType>(props: PickerProps<DateType>) {
         defaultOpenValue,
         onDateMouseEnter: onEnter,
         onDateMouseLeave: onLeave,
+        headRender,
       }}
     >
       <PickerTrigger
